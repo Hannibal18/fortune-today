@@ -221,15 +221,22 @@ p {
     box-shadow: 0 2px 8px var(--shadow);
     background: var(--display-bg);
     animation: fadeIn 0.3s ease-out;
-    transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease, margin 0.3s ease;
+    /* 더 부드러운 가속도 곡선 적용 */
+    transition: 
+        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+        width 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+        margin 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .preview-item.removing {
     opacity: 0;
     transform: scale(0);
     width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    margin-right: -10px !important; /* gap 크기만큼 음수 마진을 주어 완벽히 밀착 */
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     pointer-events: none;
 }
 

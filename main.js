@@ -118,18 +118,12 @@ function renderPreviews() {
       removeBtn.innerHTML = '✕';
       removeBtn.onclick = (event) => {
         const item = event.target.closest('.preview-item');
-        const style = window.getComputedStyle(imagePreviewList);
-        const gap = parseInt(style.gap) || 0;
         
-        item.style.width = item.offsetWidth + 'px';
-        item.style.marginRight = gap + 'px';
-        
-        requestAnimationFrame(() => {
-          item.classList.add('removing');
-          item.style.marginRight = -gap + 'px';
-        });
+        // CSS 애니메이션만 실행되도록 단순하게 클래스 추가
+        item.classList.add('removing');
 
-        setTimeout(() => removeFileByUid(file.uid), 300);
+        // 400ms (CSS transition 시간) 대기 후 배열에서 삭제
+        setTimeout(() => removeFileByUid(file.uid), 400);
       };
 
       previewItem.appendChild(img);
