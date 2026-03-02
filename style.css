@@ -201,37 +201,51 @@ p {
     word-break: break-all;
 }
 
-.image-preview-container {
+.image-preview-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 10px;
     margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.8rem;
-    animation: fadeIn 0.3s ease-in-out;
+    width: 100%;
 }
 
-#image-preview {
-    max-width: 100%;
-    max-height: 200px;
+.preview-item {
+    position: relative;
+    aspect-ratio: 1/1;
     border-radius: 8px;
-    box-shadow: 0 4px 10px var(--shadow);
-    object-fit: contain;
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--shadow);
+    background: var(--display-bg);
 }
 
-.cancel-photo-btn {
-    background-color: transparent;
-    color: #dc3545;
-    border: 1px solid #dc3545;
-    padding: 6px 12px;
-    border-radius: 5px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.cancel-photo-btn:hover {
-    background-color: #dc3545;
+.remove-photo-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(220, 53, 69, 0.9);
     color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    transition: background 0.2s ease;
+}
+
+.remove-photo-btn:hover {
+    background: #dc3545;
 }
 
 .submit-button {

@@ -53,43 +53,75 @@ const formStatus = document.getElementById('form-status');
 const submitBtn = document.getElementById('submit-button');
 const fileInput = document.getElementById('attachment');
 const fileNameDisplay = document.getElementById('file-name');
-const imagePreviewContainer = document.getElementById('image-preview-container');
-const imagePreview = document.getElementById('image-preview');
-const cancelPhotoBtn = document.getElementById('cancel-photo');
+const imagePreviewList = document.getElementById('image-preview-list');
 
-// File Input Change Listener (with Preview)
-fileInput.addEventListener('change', () => {
-  if (fileInput.files.length > 0) {
-    const file = fileInput.files[0];
-    fileNameDisplay.textContent = `선택된 파일: ${file.name}`;
-    fileNameDisplay.style.color = 'var(--button-bg)';
+let selectedFiles = []; // Array to store up to 5 files
 
-    // Show Image Preview if it's an image
-    if (file.type.startsWith('image/')) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        imagePreview.src = e.target.result;
-        imagePreviewContainer.style.display = 'flex';
-      };
-      reader.readAsDataURL(file);
-    }
-  } else {
-    resetFileInput();
+// Handle File Input Change
+fileInput.addEventListener('change', (e) => {
+  const newFiles = Array.from(e.target.files);
+  
+  // Combine with existing files and enforce limit
+  if (selectedFiles.length + newFiles.length > 5) {
+    alert('사진은 최대 5장까지만 첨부할 수 있습니다.');
+    fileInput.value = ''; // Reset input to allow re-selection
+    return;
   }
+
+  // Add new image files only
+  newFiles.forEach(file => {
+    if (file.type.startsWith('image/')) {
+      selectedFiles.push(file);
+    }
+  });
+
+  renderPreviews();
+  fileInput.value = ''; // Reset input so same file can be selected again
 });
 
-// Cancel Photo Button Listener
-cancelPhotoBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  resetFileInput();
-});
+function renderPreviews() {
+  imagePreviewList.innerHTML = ''; // Clear current previews
+  
+  if (selectedFiles.length === 0) {
+    fileNameDisplay.textContent = '선택된 파일 없음';
+    fileNameDisplay.style.color = 'var(--subtext-color)';
+    return;
+  }
+
+  fileNameDisplay.textContent = `선택된 파일: ${selectedFiles.length}장`;
+  fileNameDisplay.style.color = 'var(--button-bg)';
+
+  selectedFiles.forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const previewItem = document.createElement('div');
+      previewItem.className = 'preview-item';
+      
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'remove-photo-btn';
+      removeBtn.innerHTML = '✕';
+      removeBtn.onclick = () => removeFile(index);
+
+      previewItem.appendChild(img);
+      previewItem.appendChild(removeBtn);
+      imagePreviewList.appendChild(previewItem);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function removeFile(index) {
+  selectedFiles.splice(index, 1);
+  renderPreviews();
+}
 
 function resetFileInput() {
-  fileInput.value = ''; // Clear file input
-  fileNameDisplay.textContent = '선택된 파일 없음';
-  fileNameDisplay.style.color = 'var(--subtext-color)';
-  imagePreviewContainer.style.display = 'none';
-  imagePreview.src = '';
+  selectedFiles = [];
+  renderPreviews();
 }
 
 // Auto-focus next input on Enter (Enhanced for iOS)
@@ -114,6 +146,12 @@ inputs.forEach((input, index) => {
 contactForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(contactForm);
+  
+  // Remove the automatic 'attachment' from FormData and replace with our array
+  formData.delete('attachment');
+  selectedFiles.forEach((file) => {
+    formData.append('attachment', file);
+  });
   
   submitBtn.disabled = true;
   submitBtn.textContent = '보내는 중...';

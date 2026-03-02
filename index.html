@@ -28,13 +28,10 @@
           <input type="tel" name="phone" placeholder="전화번호 (예: 010-1234-5678)" enterkeyhint="next" inputmode="tel">
         </div>
         <div class="form-group file-group">
-          <label for="attachment" class="file-label">📸 사진 첨부 (선택)</label>
-          <input type="file" id="attachment" name="attachment" accept="image/*" class="file-input">
+          <label for="attachment" class="file-label">📸 사진 첨부 (최대 5장)</label>
+          <input type="file" id="attachment" name="attachment" accept="image/*" class="file-input" multiple>
           <div id="file-name" class="file-name">선택된 파일 없음</div>
-          <div id="image-preview-container" class="image-preview-container" style="display: none;">
-            <img id="image-preview" src="" alt="미리보기">
-            <button type="button" id="cancel-photo" class="cancel-photo-btn" aria-label="사진 취소">✕ 사진 취소</button>
-          </div>
+          <div id="image-preview-list" class="image-preview-list"></div>
         </div>
         <div class="form-group">
           <textarea name="message" placeholder="문의 내용을 입력하세요" required enterkeyhint="done"></textarea>
