@@ -202,8 +202,8 @@ p {
 }
 
 .image-preview-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 1rem;
     width: 100%;
@@ -211,18 +211,23 @@ p {
 
 .preview-item {
     position: relative;
+    width: 80px;
+    height: 80px;
     aspect-ratio: 1/1;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px var(--shadow);
     background: var(--display-bg);
     animation: fadeIn 0.3s ease-out;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease, margin 0.3s ease;
 }
 
 .preview-item.removing {
     opacity: 0;
-    transform: scale(0.5);
+    transform: scale(0);
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     pointer-events: none;
 }
 

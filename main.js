@@ -100,8 +100,20 @@ function renderPreviews() {
       removeBtn.innerHTML = '✕';
       removeBtn.onclick = (e) => {
         const item = e.target.closest('.preview-item');
-        item.classList.add('removing');
-        // Wait for animation (0.3s) then remove from array
+        // Get the current width and gap to animate smoothly
+        const style = window.getComputedStyle(imagePreviewList);
+        const gap = parseInt(style.gap) || 0;
+        
+        // Start animation: collapse size and margin to move neighbors
+        item.style.width = item.offsetWidth + 'px';
+        item.style.marginRight = gap + 'px';
+        
+        // Wait for next frame to trigger transition
+        requestAnimationFrame(() => {
+          item.classList.add('removing');
+          item.style.marginRight = -gap + 'px'; // Effectively removes the gap
+        });
+
         setTimeout(() => removeFile(index), 300);
       };
 
