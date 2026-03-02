@@ -1,6 +1,28 @@
 
 const fortuneButton = document.getElementById('fortune-button');
 const fortuneDisplay = document.getElementById('fortune-display');
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Check for saved theme preference
+const currentTheme = localStorage.getItem('theme') || 'light';
+if (currentTheme === 'dark') {
+  body.setAttribute('data-theme', 'dark');
+  themeToggle.textContent = '☀️';
+}
+
+themeToggle.addEventListener('click', () => {
+  const isDark = body.getAttribute('data-theme') === 'dark';
+  if (isDark) {
+    body.removeAttribute('data-theme');
+    themeToggle.textContent = '🌙';
+    localStorage.setItem('theme', 'light');
+  } else {
+    body.setAttribute('data-theme', 'dark');
+    themeToggle.textContent = '☀️';
+    localStorage.setItem('theme', 'dark');
+  }
+});
 
 const fortunes = [
   "오늘은 새로운 인연을 만날 수 있는 좋은 날입니다.",

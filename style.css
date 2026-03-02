@@ -1,37 +1,88 @@
 
+:root {
+    --bg-color: #f0f2f5;
+    --container-bg: white;
+    --text-color: #333;
+    --heading-color: #4a4a4a;
+    --subtext-color: #6c757d;
+    --button-bg: #007bff;
+    --button-hover: #0056b3;
+    --display-bg: #f8f9fa;
+    --display-border: #e9ecef;
+    --display-text: #495057;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --container-bg: #2d2d2d;
+    --text-color: #e0e0e0;
+    --heading-color: #ffffff;
+    --subtext-color: #b0b0b0;
+    --button-bg: #375a7f;
+    --button-hover: #2b4764;
+    --display-bg: #3d3d3d;
+    --display-border: #444;
+    --display-text: #e0e0e0;
+    --shadow: rgba(0, 0, 0, 0.5);
+}
+
 body {
     font-family: 'Gothic A1', sans-serif;
-    background: #f0f2f5;
-    color: #333;
+    background: var(--bg-color);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
     text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
-    background: white;
+    background: var(--container-bg);
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px var(--shadow);
     max-width: 500px;
     width: 90%;
+    position: relative;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
 }
 
 h1 {
-    color: #4a4a4a;
+    color: var(--heading-color);
     margin-bottom: 0.5rem;
 }
 
 p {
-    color: #6c757d;
+    color: var(--subtext-color);
     margin-bottom: 2rem;
 }
 
 #fortune-button {
-    background-color: #007bff;
+    background-color: var(--button-bg);
     color: white;
     border: none;
     padding: 15px 30px;
@@ -43,7 +94,7 @@ p {
 }
 
 #fortune-button:hover {
-    background-color: #0056b3;
+    background-color: var(--button-hover);
     transform: translateY(-2px);
 }
 
@@ -54,16 +105,17 @@ p {
 #fortune-display {
     margin-top: 2rem;
     padding: 1.5rem;
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background: var(--display-bg);
+    border: 1px solid var(--display-border);
     border-radius: 10px;
     min-height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.1rem;
-    color: #495057;
+    color: var(--display-text);
     animation: fadeIn 0.5s ease-in-out;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 @keyframes fadeIn {
