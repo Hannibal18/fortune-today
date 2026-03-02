@@ -67,36 +67,47 @@ fileInput.addEventListener('change', (e) => {
     newFiles = newFiles.slice(0, remainingSlots);
   }
 
-  selectedFiles = [...selectedFiles, ...newFiles];
+  // Assign a unique ID to each file for stable rendering
+  newFiles.forEach(file => {
+    file.uid = Math.random().toString(36).substr(2, 9) + Date.now();
+    selectedFiles.push(file);
+  });
 
   renderPreviews();
   fileInput.value = ''; // Reset input so same file can be selected again
 });
 
 function renderPreviews() {
-  // Fix current height to prevent layout jump below
-  const currentHeight = imagePreviewList.offsetHeight;
-  if (currentHeight > 0) {
-    imagePreviewList.style.minHeight = currentHeight + 'px';
-  }
+  const currentUids = selectedFiles.map(f => f.uid);
 
-  imagePreviewList.innerHTML = ''; // Clear current previews
-  
+  // 1. Remove DOM elements that are no longer in selectedFiles
+  const existingItems = Array.from(imagePreviewList.querySelectorAll('.preview-item'));
+  existingItems.forEach(item => {
+    if (!currentUids.includes(item.dataset.uid)) {
+      item.remove();
+    }
+  });
+
+  // 2. Update status text
   if (selectedFiles.length === 0) {
     fileNameDisplay.textContent = '선택된 파일 없음';
     fileNameDisplay.style.color = 'var(--subtext-color)';
-    imagePreviewList.style.minHeight = '0px';
     return;
   }
 
   fileNameDisplay.textContent = `선택된 파일: ${selectedFiles.length}장`;
   fileNameDisplay.style.color = 'var(--button-bg)';
 
-  selectedFiles.forEach((file, index) => {
+  // 3. Add only NEW preview items
+  selectedFiles.forEach((file) => {
+    const existing = imagePreviewList.querySelector(`[data-uid="${file.uid}"]`);
+    if (existing) return; // Skip already rendered items
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const previewItem = document.createElement('div');
       previewItem.className = 'preview-item';
+      previewItem.dataset.uid = file.uid; // Store UID for tracking
       
       const img = document.createElement('img');
       img.src = e.target.result;
@@ -105,8 +116,8 @@ function renderPreviews() {
       removeBtn.type = 'button';
       removeBtn.className = 'remove-photo-btn';
       removeBtn.innerHTML = '✕';
-      removeBtn.onclick = (e) => {
-        const item = e.target.closest('.preview-item');
+      removeBtn.onclick = (event) => {
+        const item = event.target.closest('.preview-item');
         const style = window.getComputedStyle(imagePreviewList);
         const gap = parseInt(style.gap) || 0;
         
@@ -118,26 +129,19 @@ function renderPreviews() {
           item.style.marginRight = -gap + 'px';
         });
 
-        setTimeout(() => removeFile(index), 300);
+        setTimeout(() => removeFileByUid(file.uid), 300);
       };
 
       previewItem.appendChild(img);
       previewItem.appendChild(removeBtn);
       imagePreviewList.appendChild(previewItem);
-      
-      // Release min-height slowly after adding items to adjust layout smoothly
-      if (index === selectedFiles.length - 1) {
-        requestAnimationFrame(() => {
-          imagePreviewList.style.minHeight = '0px';
-        });
-      }
     };
     reader.readAsDataURL(file);
   });
 }
 
-function removeFile(index) {
-  selectedFiles.splice(index, 1);
+function removeFileByUid(uid) {
+  selectedFiles = selectedFiles.filter(f => f.uid !== uid);
   renderPreviews();
 }
 
