@@ -17,7 +17,7 @@
     <div class="contact-section">
       <hr>
       <h3>문의하기</h3>
-      <form action="https://formspree.io/f/xdalrnrk" method="POST" class="contact-form">
+      <form id="contact-form" action="https://formspree.io/f/xdalrnrk" method="POST" class="contact-form">
         <div class="form-group">
           <input type="text" name="name" placeholder="이름" required>
         </div>
@@ -27,7 +27,8 @@
         <div class="form-group">
           <textarea name="message" placeholder="문의 내용을 입력하세요" required></textarea>
         </div>
-        <button type="submit" class="submit-button">보내기</button>
+        <button type="submit" id="submit-button" class="submit-button">보내기</button>
+        <div id="form-status" class="form-status"></div>
       </form>
     </div>
   </div>

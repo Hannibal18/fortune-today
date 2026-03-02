@@ -178,9 +178,33 @@ p {
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.submit-button:hover {
-    background-color: var(--button-hover);
-    transform: translateY(-2px);
+.submit-button:disabled {
+    background-color: var(--subtext-color);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.form-status {
+    margin-top: 1rem;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    text-align: center;
+    display: none;
+}
+
+.form-status.success {
+    display: block;
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+
+.form-status.error {
+    display: block;
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 1px solid #dc3545;
 }
 
 @keyframes fadeIn {

@@ -37,14 +37,56 @@ const fortunes = [
   "행운의 색은 파란색입니다."
 ];
 
+// Handle Fortune Button
 fortuneButton.addEventListener('click', () => {
-  // Display a random fortune
   const randomIndex = Math.floor(Math.random() * fortunes.length);
   const randomFortune = fortunes[randomIndex];
   fortuneDisplay.textContent = randomFortune;
-
-  // To re-trigger the animation, we can remove and re-add the element or a class.
   fortuneDisplay.style.animation = 'none';
-  void fortuneDisplay.offsetWidth; // Trigger a reflow
+  void fortuneDisplay.offsetWidth;
   fortuneDisplay.style.animation = ''; 
+});
+
+// Handle Contact Form Submission
+const contactForm = document.getElementById('contact-form');
+const formStatus = document.getElementById('form-status');
+const submitBtn = document.getElementById('submit-button');
+
+contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(contactForm);
+  
+  submitBtn.disabled = true;
+  submitBtn.textContent = '보내는 중...';
+  formStatus.textContent = '';
+
+  try {
+    const response = await fetch(contactForm.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      formStatus.textContent = '문의가 성공적으로 전송되었습니다! 곧 답변 드리겠습니다.';
+      formStatus.className = 'form-status success';
+      contactForm.reset();
+    } else {
+      const data = await response.json();
+      if (Object.hasOwn(data, 'errors')) {
+        formStatus.textContent = data["errors"].map(error => error["message"]).join(", ");
+      } else {
+        formStatus.textContent = '죄송합니다. 오류가 발생했습니다.';
+      }
+      formStatus.className = 'form-status error';
+    }
+  } catch (error) {
+    formStatus.textContent = '네트워크 연결 오류가 발생했습니다. 나중에 다시 시도해 주세요.';
+    formStatus.className = 'form-status error';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = '보내기';
+  }
 });
