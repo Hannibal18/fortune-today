@@ -118,6 +118,71 @@ p {
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
+.contact-section {
+    margin-top: 3rem;
+    text-align: left;
+}
+
+.contact-section hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--display-border), rgba(0, 0, 0, 0));
+    margin-bottom: 2rem;
+}
+
+.contact-section h3 {
+    text-align: center;
+    color: var(--heading-color);
+    margin-bottom: 1.5rem;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--display-border);
+    border-radius: 8px;
+    background-color: var(--display-bg);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--button-bg);
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.submit-button {
+    background-color: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.submit-button:hover {
+    background-color: var(--button-hover);
+    transform: translateY(-2px);
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
