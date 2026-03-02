@@ -65,15 +65,18 @@ fileInput.addEventListener('change', () => {
   }
 });
 
-// Auto-focus next input on Enter
+// Auto-focus next input on Enter (Enhanced for iOS)
 const inputs = contactForm.querySelectorAll('input:not([type="file"]), textarea');
 inputs.forEach((input, index) => {
   input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    // Check both Enter key and its code for broader compatibility
+    if ((e.key === 'Enter' || e.keyCode === 13) && !e.shiftKey) {
       if (input.tagName !== 'TEXTAREA') {
-        e.preventDefault();
+        e.preventDefault(); // Stop default form submission
         const nextInput = inputs[index + 1];
         if (nextInput) {
+          // Blur current input and focus next immediately
+          input.blur(); 
           nextInput.focus();
         }
       }
