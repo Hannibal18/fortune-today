@@ -201,6 +201,39 @@ p {
     word-break: break-all;
 }
 
+.image-preview-container {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+#image-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px var(--shadow);
+    object-fit: contain;
+}
+
+.cancel-photo-btn {
+    background-color: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancel-photo-btn:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
 .submit-button {
     background-color: var(--button-bg);
     color: white;

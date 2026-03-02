@@ -53,17 +53,44 @@ const formStatus = document.getElementById('form-status');
 const submitBtn = document.getElementById('submit-button');
 const fileInput = document.getElementById('attachment');
 const fileNameDisplay = document.getElementById('file-name');
+const imagePreviewContainer = document.getElementById('image-preview-container');
+const imagePreview = document.getElementById('image-preview');
+const cancelPhotoBtn = document.getElementById('cancel-photo');
 
-// File Input Change Listener
+// File Input Change Listener (with Preview)
 fileInput.addEventListener('change', () => {
   if (fileInput.files.length > 0) {
-    fileNameDisplay.textContent = `선택된 파일: ${fileInput.files[0].name}`;
+    const file = fileInput.files[0];
+    fileNameDisplay.textContent = `선택된 파일: ${file.name}`;
     fileNameDisplay.style.color = 'var(--button-bg)';
+
+    // Show Image Preview if it's an image
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        imagePreview.src = e.target.result;
+        imagePreviewContainer.style.display = 'flex';
+      };
+      reader.readAsDataURL(file);
+    }
   } else {
-    fileNameDisplay.textContent = '선택된 파일 없음';
-    fileNameDisplay.style.color = 'var(--subtext-color)';
+    resetFileInput();
   }
 });
+
+// Cancel Photo Button Listener
+cancelPhotoBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  resetFileInput();
+});
+
+function resetFileInput() {
+  fileInput.value = ''; // Clear file input
+  fileNameDisplay.textContent = '선택된 파일 없음';
+  fileNameDisplay.style.color = 'var(--subtext-color)';
+  imagePreviewContainer.style.display = 'none';
+  imagePreview.src = '';
+}
 
 // Auto-focus next input on Enter (Enhanced for iOS)
 const inputs = contactForm.querySelectorAll('input:not([type="file"]), textarea');
@@ -105,6 +132,7 @@ contactForm.addEventListener('submit', async (e) => {
       formStatus.textContent = '문의가 성공적으로 전송되었습니다! 곧 답변 드리겠습니다.';
       formStatus.className = 'form-status success';
       contactForm.reset();
+      resetFileInput(); // Clear preview and file state
     } else {
       const data = await response.json();
       if (Object.hasOwn(data, 'errors')) {
