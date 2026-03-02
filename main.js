@@ -74,11 +74,18 @@ fileInput.addEventListener('change', (e) => {
 });
 
 function renderPreviews() {
+  // Fix current height to prevent layout jump below
+  const currentHeight = imagePreviewList.offsetHeight;
+  if (currentHeight > 0) {
+    imagePreviewList.style.minHeight = currentHeight + 'px';
+  }
+
   imagePreviewList.innerHTML = ''; // Clear current previews
   
   if (selectedFiles.length === 0) {
     fileNameDisplay.textContent = '선택된 파일 없음';
     fileNameDisplay.style.color = 'var(--subtext-color)';
+    imagePreviewList.style.minHeight = '0px';
     return;
   }
 
@@ -100,18 +107,15 @@ function renderPreviews() {
       removeBtn.innerHTML = '✕';
       removeBtn.onclick = (e) => {
         const item = e.target.closest('.preview-item');
-        // Get the current width and gap to animate smoothly
         const style = window.getComputedStyle(imagePreviewList);
         const gap = parseInt(style.gap) || 0;
         
-        // Start animation: collapse size and margin to move neighbors
         item.style.width = item.offsetWidth + 'px';
         item.style.marginRight = gap + 'px';
         
-        // Wait for next frame to trigger transition
         requestAnimationFrame(() => {
           item.classList.add('removing');
-          item.style.marginRight = -gap + 'px'; // Effectively removes the gap
+          item.style.marginRight = -gap + 'px';
         });
 
         setTimeout(() => removeFile(index), 300);
@@ -120,6 +124,13 @@ function renderPreviews() {
       previewItem.appendChild(img);
       previewItem.appendChild(removeBtn);
       imagePreviewList.appendChild(previewItem);
+      
+      // Release min-height slowly after adding items to adjust layout smoothly
+      if (index === selectedFiles.length - 1) {
+        requestAnimationFrame(() => {
+          imagePreviewList.style.minHeight = '0px';
+        });
+      }
     };
     reader.readAsDataURL(file);
   });

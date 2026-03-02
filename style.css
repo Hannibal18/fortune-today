@@ -207,6 +207,8 @@ p {
     gap: 10px;
     margin-top: 1rem;
     width: 100%;
+    min-height: 0;
+    transition: min-height 0.3s ease;
 }
 
 .preview-item {
