@@ -59,21 +59,15 @@ let selectedFiles = []; // Array to store up to 5 files
 
 // Handle File Input Change
 fileInput.addEventListener('change', (e) => {
-  const newFiles = Array.from(e.target.files);
-  
-  // Combine with existing files and enforce limit
-  if (selectedFiles.length + newFiles.length > 5) {
-    alert('사진은 최대 5장까지만 첨부할 수 있습니다.');
-    fileInput.value = ''; // Reset input to allow re-selection
-    return;
+  let newFiles = Array.from(e.target.files).filter(file => file.type.startsWith('image/'));
+  const remainingSlots = 5 - selectedFiles.length;
+
+  if (newFiles.length > remainingSlots) {
+    alert(`최대 5장까지 첨부 가능합니다. 선택하신 사진 중 ${remainingSlots}장만 추가되었습니다.`);
+    newFiles = newFiles.slice(0, remainingSlots);
   }
 
-  // Add new image files only
-  newFiles.forEach(file => {
-    if (file.type.startsWith('image/')) {
-      selectedFiles.push(file);
-    }
-  });
+  selectedFiles = [...selectedFiles, ...newFiles];
 
   renderPreviews();
   fileInput.value = ''; // Reset input so same file can be selected again
