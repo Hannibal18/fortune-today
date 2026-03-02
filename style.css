@@ -216,6 +216,14 @@ p {
     overflow: hidden;
     box-shadow: 0 2px 8px var(--shadow);
     background: var(--display-bg);
+    animation: fadeIn 0.3s ease-out;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.preview-item.removing {
+    opacity: 0;
+    transform: scale(0.5);
+    pointer-events: none;
 }
 
 .preview-item img {

@@ -98,7 +98,12 @@ function renderPreviews() {
       removeBtn.type = 'button';
       removeBtn.className = 'remove-photo-btn';
       removeBtn.innerHTML = '✕';
-      removeBtn.onclick = () => removeFile(index);
+      removeBtn.onclick = (e) => {
+        const item = e.target.closest('.preview-item');
+        item.classList.add('removing');
+        // Wait for animation (0.3s) then remove from array
+        setTimeout(() => removeFile(index), 300);
+      };
 
       previewItem.appendChild(img);
       previewItem.appendChild(removeBtn);
