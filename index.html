@@ -1,14 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
+  <title>오늘의 운세</title>
   <link href='/style.css' rel='stylesheet'>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
+  <div class="container">
+    <h1>오늘의 운세</h1>
+    <p>버튼을 눌러 당신의 운세를 확인하세요!</p>
+    <button id="fortune-button">운세 보기</button>
+    <div id="fortune-display"></div>
+  </div>
   <script defer type="text/javascript" src="/main.js"></script>
 </body>
 </html>
