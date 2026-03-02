@@ -65,6 +65,22 @@ fileInput.addEventListener('change', () => {
   }
 });
 
+// Auto-focus next input on Enter
+const inputs = contactForm.querySelectorAll('input:not([type="file"]), textarea');
+inputs.forEach((input, index) => {
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      if (input.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        const nextInput = inputs[index + 1];
+        if (nextInput) {
+          nextInput.focus();
+        }
+      }
+    }
+  });
+});
+
 contactForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const formData = new FormData(contactForm);

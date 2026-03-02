@@ -19,13 +19,13 @@
       <h3>문의하기</h3>
       <form id="contact-form" action="https://formspree.io/f/xdalrnrk" method="POST" class="contact-form">
         <div class="form-group">
-          <input type="text" name="name" placeholder="이름" required>
+          <input type="text" name="name" placeholder="이름" required enterkeyhint="next">
         </div>
         <div class="form-group">
-          <input type="email" name="_replyto" placeholder="이메일 주소" required>
+          <input type="email" name="_replyto" placeholder="이메일 주소" required enterkeyhint="next">
         </div>
         <div class="form-group">
-          <input type="tel" name="phone" placeholder="전화번호 (예: 010-1234-5678)">
+          <input type="tel" name="phone" placeholder="전화번호 (예: 010-1234-5678)" enterkeyhint="next">
         </div>
         <div class="form-group file-group">
           <label for="attachment" class="file-label">📸 사진 첨부 (선택)</label>
@@ -33,7 +33,7 @@
           <div id="file-name" class="file-name">선택된 파일 없음</div>
         </div>
         <div class="form-group">
-          <textarea name="message" placeholder="문의 내용을 입력하세요" required></textarea>
+          <textarea name="message" placeholder="문의 내용을 입력하세요" required enterkeyhint="done"></textarea>
         </div>
         <button type="submit" id="submit-button" class="submit-button">보내기</button>
         <div id="form-status" class="form-status"></div>
