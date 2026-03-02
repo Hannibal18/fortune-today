@@ -1,10 +1,128 @@
 
 const fortuneButton = document.getElementById('fortune-button');
-const fortuneDisplay = document.getElementById('fortune-display');
+const fortuneCard = document.getElementById('fortune-card');
+const fortuneTitle = document.getElementById('fortune-title');
+const fortuneText = document.getElementById('fortune-text');
+const luckyNumberDisplay = document.getElementById('lucky-number');
+const luckyColorDisplay = document.getElementById('lucky-color');
+const streakBadge = document.getElementById('streak-badge');
+const shareButton = document.getElementById('share-button');
+
 const themeToggle = document.getElementById('theme-toggle');
 const body = document.body;
 
-// Check for saved theme preference
+// --- Fortune Data ---
+const fortunes = [
+  { text: "오늘은 새로운 인연을 만날 수 있는 좋은 날입니다.", color: "핑크", number: 7 },
+  { text: "생각지도 못한 행운이 찾아올 것입니다.", color: "골드", number: 1 },
+  { text: "작은 노력이 큰 결실을 맺을 것입니다.", color: "그린", number: 3 },
+  { text: "휴식이 필요한 시기입니다. 잠시 쉬어가세요.", color: "스카이블루", number: 0 },
+  { text: "도전적인 일이 있겠지만, 결국 성공할 것입니다.", color: "레드", number: 9 },
+  { text: "주변 사람들에게 친절을 베풀면 좋은 일이 생길 것입니다.", color: "옐로우", number: 5 },
+  { text: "금전운이 좋은 날입니다. 작은 투자를 고려해보세요.", color: "퍼플", number: 8 },
+  { text: "오랫동안 고민했던 문제가 해결될 것입니다.", color: "화이트", number: 4 },
+  { text: "새로운 것을 배우기에 좋은 날입니다.", color: "네이비", number: 2 },
+  { text: "오후 늦게 기쁜 소식이 들려올 것입니다.", color: "오렌지", number: 6 }
+];
+
+// --- Streak & Daily Limit Logic ---
+function updateStreakDisplay() {
+  const streak = localStorage.getItem('streak') || 0;
+  streakBadge.textContent = `🔥 연속 ${streak}일째 도전 중!`;
+}
+
+function checkDailyStatus() {
+  const lastPlayedDate = localStorage.getItem('lastPlayedDate');
+  const today = new Date().toDateString();
+
+  if (lastPlayedDate === today) {
+    // Already played today
+    const savedFortuneIndex = localStorage.getItem('savedFortuneIndex');
+    if (savedFortuneIndex !== null) {
+      showFortuneCard(fortunes[savedFortuneIndex], false);
+    }
+    fortuneButton.disabled = true;
+    fortuneButton.textContent = "내일 또 오세요!";
+  } else {
+    // New day
+    fortuneButton.disabled = false;
+    fortuneButton.textContent = "운세 보기";
+    fortuneCard.style.display = 'none';
+  }
+  updateStreakDisplay();
+}
+
+function handleFortuneClick() {
+  const today = new Date().toDateString();
+  const lastPlayedDate = localStorage.getItem('lastPlayedDate');
+  
+  // Streak Logic
+  if (lastPlayedDate !== today) {
+    let streak = parseInt(localStorage.getItem('streak') || 0);
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    if (lastPlayedDate === yesterday.toDateString()) {
+      streak++;
+    } else {
+      streak = 1; // Reset streak if missed a day
+    }
+    
+    localStorage.setItem('streak', streak);
+    localStorage.setItem('lastPlayedDate', today);
+    updateStreakDisplay();
+
+    // Pick Random Fortune
+    const randomIndex = Math.floor(Math.random() * fortunes.length);
+    localStorage.setItem('savedFortuneIndex', randomIndex);
+    
+    showFortuneCard(fortunes[randomIndex], true);
+    
+    // Disable Button
+    fortuneButton.disabled = true;
+    fortuneButton.textContent = "내일 또 오세요!";
+  }
+}
+
+function showFortuneCard(data, isNew) {
+  fortuneText.textContent = data.text;
+  luckyNumberDisplay.textContent = data.number;
+  luckyColorDisplay.textContent = data.color;
+  fortuneCard.style.display = 'block';
+
+  if (isNew) {
+    // Trigger Confetti
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+}
+
+// --- Share Logic ---
+shareButton.addEventListener('click', () => {
+  const shareData = {
+    title: '오늘의 운세',
+    text: `[오늘의 운세]\n"${fortuneText.textContent}"\n🍀 행운의 숫자: ${luckyNumberDisplay.textContent}\n🎨 행운의 색: ${luckyColorDisplay.textContent}\n\n당신의 운세도 확인해보세요!`,
+    url: window.location.href
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData).catch(console.error);
+  } else {
+    // Fallback for desktop
+    navigator.clipboard.writeText(shareData.text + "\n" + shareData.url);
+    alert('운세 결과가 클립보드에 복사되었습니다!');
+  }
+});
+
+// Initialize
+checkDailyStatus();
+fortuneButton.addEventListener('click', handleFortuneClick);
+
+
+// --- Theme Logic ---
 const currentTheme = localStorage.getItem('theme') || 'light';
 if (currentTheme === 'dark') {
   body.setAttribute('data-theme', 'dark');
@@ -22,29 +140,6 @@ themeToggle.addEventListener('click', () => {
     themeToggle.textContent = '☀️';
     localStorage.setItem('theme', 'dark');
   }
-});
-
-const fortunes = [
-  "오늘은 새로운 인연을 만날 수 있는 좋은 날입니다.",
-  "생각지도 못한 행운이 찾아올 것입니다.",
-  "작은 노력이 큰 결실을 맺을 것입니다.",
-  "휴식이 필요한 시기입니다. 잠시 쉬어가세요.",
-  "도전적인 일이 있겠지만, 결국 성공할 것입니다.",
-  "주변 사람들에게 친절을 베풀면 좋은 일이 생길 것입니다.",
-  "금전운이 좋은 날입니다. 작은 투자를 고려해보세요.",
-  "오랫동안 고민했던 문제가 해결될 것입니다.",
-  "새로운 것을 배우기에 좋은 날입니다.",
-  "행운의 색은 파란색입니다."
-];
-
-// Handle Fortune Button
-fortuneButton.addEventListener('click', () => {
-  const randomIndex = Math.floor(Math.random() * fortunes.length);
-  const randomFortune = fortunes[randomIndex];
-  fortuneDisplay.textContent = randomFortune;
-  fortuneDisplay.style.animation = 'none';
-  void fortuneDisplay.offsetWidth;
-  fortuneDisplay.style.animation = ''; 
 });
 
 // Handle Contact Form Submission

@@ -4,15 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>오늘의 운세</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <link href='/style.css' rel='stylesheet'>
 </head>
 <body>
   <div class="container">
     <button id="theme-toggle" class="theme-toggle" aria-label="테마 전환">🌙</button>
     <h1>오늘의 운세</h1>
+    <div id="streak-badge" class="streak-badge">🔥 연속 0일째</div>
     <p>버튼을 눌러 당신의 운세를 확인하세요!</p>
+    
+    <div id="fortune-card" class="fortune-card" style="display: none;">
+      <h3 id="fortune-title">오늘의 운세</h3>
+      <p id="fortune-text"></p>
+      <div class="lucky-items">
+        <span>🍀 행운의 숫자: <b id="lucky-number"></b></span>
+        <span>🎨 행운의 색: <b id="lucky-color"></b></span>
+      </div>
+      <button id="share-button" class="share-button">📢 친구에게 자랑하기</button>
+    </div>
+
     <button id="fortune-button">운세 보기</button>
-    <div id="fortune-display"></div>
 
     <div class="contact-section">
       <hr>

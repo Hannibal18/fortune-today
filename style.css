@@ -93,29 +93,90 @@ p {
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
 }
 
-#fortune-button:hover {
+#fortune-button:disabled {
+    background-color: var(--subtext-color);
+    cursor: default;
+    box-shadow: none;
+    transform: none;
+}
+
+#fortune-button:hover:not(:disabled) {
     background-color: var(--button-hover);
     transform: translateY(-2px);
 }
 
-#fortune-button:active {
+#fortune-button:active:not(:disabled) {
     transform: translateY(1px);
 }
 
-#fortune-display {
-    margin-top: 2rem;
-    padding: 1.5rem;
+.streak-badge {
+    background: #ffec99;
+    color: #856404;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px var(--shadow);
+}
+
+[data-theme="dark"] .streak-badge {
+    background: #4a4220;
+    color: #ffd700;
+}
+
+.fortune-card {
     background: var(--display-bg);
     border: 1px solid var(--display-border);
-    border-radius: 10px;
-    min-height: 50px;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    text-align: center;
+    box-shadow: 0 4px 15px var(--shadow);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.fortune-card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+    color: var(--heading-color);
+}
+
+.fortune-card p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.lucky-items {
     display: flex;
     justify-content: center;
-    align-items: center;
-    font-size: 1.1rem;
-    color: var(--display-text);
-    animation: fadeIn 0.5s ease-in-out;
-    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    gap: 15px;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--subtext-color);
+}
+
+.lucky-items b {
+    color: var(--button-bg);
+}
+
+.share-button {
+    background: transparent;
+    border: 1px solid var(--button-bg);
+    color: var(--button-bg);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.share-button:hover {
+    background: var(--button-bg);
+    color: white;
 }
 
 .contact-section {
