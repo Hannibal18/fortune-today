@@ -51,6 +51,19 @@ fortuneButton.addEventListener('click', () => {
 const contactForm = document.getElementById('contact-form');
 const formStatus = document.getElementById('form-status');
 const submitBtn = document.getElementById('submit-button');
+const fileInput = document.getElementById('attachment');
+const fileNameDisplay = document.getElementById('file-name');
+
+// File Input Change Listener
+fileInput.addEventListener('change', () => {
+  if (fileInput.files.length > 0) {
+    fileNameDisplay.textContent = `선택된 파일: ${fileInput.files[0].name}`;
+    fileNameDisplay.style.color = 'var(--button-bg)';
+  } else {
+    fileNameDisplay.textContent = '선택된 파일 없음';
+    fileNameDisplay.style.color = 'var(--subtext-color)';
+  }
+});
 
 contactForm.addEventListener('submit', async (e) => {
   e.preventDefault();
